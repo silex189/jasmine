@@ -1,9 +1,9 @@
-import { TestBed, getTestBed } from '@angular/core/testing';
-
-import { ApiService } from './api.service';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { environment } from 'src/environments/environment';
 import { HttpHeaders } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { getTestBed, TestBed } from '@angular/core/testing';
+import { environment } from 'src/environments/environment';
+import { ApiService } from './api.service';
+
 
 fdescribe('ApiService', () => {
   let injector: TestBed;
@@ -93,4 +93,34 @@ fdescribe('ApiService', () => {
       // Aquí mandamos la petición al HttpTestingController
       req.flush(result);
     });
+  });
+
+  describe('PUT', () => {
+    it('Should execute PUT', () => {
+      const result = 'resultado';
+
+      service.put('/test', {}, {}).subscribe(response => {
+        expect(response).toBeTruthy();
+      });
+
+      const req = httpMock.expectOne(environment.apiEndpoint + '/test');
+      expect(req.request.method).toBe('PUT');
+
+      req.flush(result);
+    });
+
+  });
+
+  describe('DELETE', () => {
+    it('Should execute DELETE', () => {
+
+      service.delete('/test', {}).subscribe(response => {
+        expect(response).toBeTruthy();
+      });
+
+      const req = httpMock.expectOne(environment.apiEndpoint + '/test');
+      expect(req.request.method).toBe('DELETE');
+    });
+
+  });
 });
